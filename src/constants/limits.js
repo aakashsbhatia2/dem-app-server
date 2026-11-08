@@ -6,3 +6,4 @@ export const MAX_TRACK_POINTS = 20_000;
 export const JSON_BODY_LIMIT = "2mb";
 export const MAX_SEARCH_RESULTS = 20;
 export const MAX_SEARCH_QUERY_LENGTH = 100;
+export const MAX_GROUP_RUN_INVITES = 10;

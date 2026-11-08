@@ -1,5 +1,6 @@
 import {
   JSON_BODY_LIMIT,
+  MAX_GROUP_RUN_INVITES,
   MAX_ROUTE_NAME_LENGTH,
   MAX_ROUTE_POINTS,
   MAX_TRACK_POINTS,
@@ -8,6 +9,51 @@ import {
 } from "./limits.js";
 
 export const ERRORS = {
+  GROUP_RUN_NOT_FOUND: {
+    code: "GROUP_RUN_NOT_FOUND",
+    status: 404,
+    message: "Group run not found",
+  },
+  INVALID_INVITEES: {
+    code: "INVALID_INVITEES",
+    status: 400,
+    message: `Invite between 1 and ${MAX_GROUP_RUN_INVITES} people you follow`,
+  },
+  GROUP_RUN_HOST_ONLY: {
+    code: "GROUP_RUN_HOST_ONLY",
+    status: 403,
+    message: "Only the host can do this",
+  },
+  HOST_CANNOT_DECLINE: {
+    code: "HOST_CANNOT_DECLINE",
+    status: 400,
+    message: "The host can't decline their own group run",
+  },
+  GROUP_RUN_ALREADY_STARTED: {
+    code: "GROUP_RUN_ALREADY_STARTED",
+    status: 409,
+    message: "This group run has already started",
+  },
+  GROUP_RUN_FINISHED: {
+    code: "GROUP_RUN_FINISHED",
+    status: 409,
+    message: "This group run has finished",
+  },
+  GROUP_RUN_NOT_RUNNING: {
+    code: "GROUP_RUN_NOT_RUNNING",
+    status: 409,
+    message: "This group run isn't running",
+  },
+  GROUP_RUN_NOT_JOINED: {
+    code: "GROUP_RUN_NOT_JOINED",
+    status: 403,
+    message: "Join this group run first",
+  },
+  INVALID_LOCATION: {
+    code: "INVALID_LOCATION",
+    status: 400,
+    message: "Send a latitude, longitude, timestamp and distance",
+  },
   USER_NOT_FOUND: {
     code: "USER_NOT_FOUND",
     status: 404,

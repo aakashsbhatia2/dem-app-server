@@ -41,7 +41,7 @@ async function findRunRoute(userId, routeId) {
   if (routeId === null) return null;
   if (typeof routeId !== "string") throw new ApiError(ERRORS.ROUTE_NOT_FOUND);
 
-  const route = await queries.getRoute({ id: routeId, userId });
+  const route = await queries.getRunnableRoute({ id: routeId, userId });
   if (!route) throw new ApiError(ERRORS.ROUTE_NOT_FOUND);
   return route;
 }
