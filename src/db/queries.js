@@ -89,3 +89,67 @@ export async function getRun({ id, userId }) {
   );
   return rows[0] ?? null;
 }
+
+const PUBLIC_USER_COLUMNS = `u."id", u."firstName", u."lastName", u."username"`;
+
+export async function searchUsers({ query, viewerId, limit }) {
+  const { rows } = await pool.query(
+    `SELECT ${PUBLIC_USER_COLUMNS}, (f."followerId" IS NOT NULL) AS "isFollowing"
+     FROM "user" u
+     LEFT JOIN "follow" f ON f."followerId" = $2 AND f."followingId" = u."id"
+     WHERE u."id" <> $2
+       AND (
+         u."username" = lower($1)
+         OR lower(u."firstName") = lower($1)
+         OR lower(u."lastName") = lower($1)
+         OR lower(u."firstName" || ' ' || u."lastName") = lower($1)
+       )
+     ORDER BY (u."username" = lower($1)) DESC, u."firstName", u."lastName"
+     LIMIT $3`,
+    [query, viewerId, limit],
+  );
+  return rows;
+}
+
+export async function userExists(id) {
+  const { rowCount } = await pool.query(`SELECT 1 FROM "user" WHERE "id" = $1`, [id]);
+  return rowCount > 0;
+}
+
+export async function followUser({ followerId, followingId }) {
+  await pool.query(
+    `INSERT INTO "follow" ("followerId", "followingId") VALUES ($1, $2) ON CONFLICT DO NOTHING`,
+    [followerId, followingId],
+  );
+}
+
+export async function unfollowUser({ followerId, followingId }) {
+  await pool.query(`DELETE FROM "follow" WHERE "followerId" = $1 AND "followingId" = $2`, [
+    followerId,
+    followingId,
+  ]);
+}
+
+export async function listFollowing(userId) {
+  const { rows } = await pool.query(
+    `SELECT ${PUBLIC_USER_COLUMNS}, true AS "isFollowing"
+     FROM "follow" f JOIN "user" u ON u."id" = f."followingId"
+     WHERE f."followerId" = $1
+     ORDER BY f."createdAt" DESC`,
+    [userId],
+  );
+  return rows;
+}
+
+export async function listFollowers(userId) {
+  const { rows } = await pool.query(
+    `SELECT ${PUBLIC_USER_COLUMNS}, (back."followerId" IS NOT NULL) AS "isFollowing"
+     FROM "follow" f
+     JOIN "user" u ON u."id" = f."followerId"
+     LEFT JOIN "follow" back ON back."followerId" = $1 AND back."followingId" = u."id"
+     WHERE f."followingId" = $1
+     ORDER BY f."createdAt" DESC`,
+    [userId],
+  );
+  return rows;
+}

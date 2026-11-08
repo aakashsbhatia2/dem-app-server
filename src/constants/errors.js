@@ -8,6 +8,21 @@ import {
 } from "./limits.js";
 
 export const ERRORS = {
+  USER_NOT_FOUND: {
+    code: "USER_NOT_FOUND",
+    status: 404,
+    message: "User not found",
+  },
+  CANNOT_FOLLOW_SELF: {
+    code: "CANNOT_FOLLOW_SELF",
+    status: 400,
+    message: "You can't follow yourself",
+  },
+  SEARCH_QUERY_REQUIRED: {
+    code: "SEARCH_QUERY_REQUIRED",
+    status: 400,
+    message: "Type a name or username to search",
+  },
   RUN_NOT_FOUND: {
     code: "RUN_NOT_FOUND",
     status: 404,

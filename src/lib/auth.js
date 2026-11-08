@@ -1,5 +1,6 @@
 import { expo } from "@better-auth/expo";
 import { betterAuth } from "better-auth";
+import { username } from "better-auth/plugins";
 
 import { pool } from "../db/pool.js";
 
@@ -16,6 +17,6 @@ export const auth = betterAuth({
       lastName: { type: "string", required: true },
     },
   },
-  plugins: [expo()],
+  plugins: [expo(), username({ displayUsername: false })],
   trustedOrigins: ["demoapp://", ...(isDevelopment ? ["exp://", "exp://**"] : [])],
 });
