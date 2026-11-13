@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
-    "start": "node --env-file-if-exists=.env src/index.js",
-    "dev": "nodemon --exec \"node --env-file-if-exists=.env\" src/index.js"
+    "start": "node src/index.js",
+    "dev": "nodemon --exec \"node --env-file-if-exists=.env.development\" src/index.js",
+    "prod": "node --env-file-if-exists=.env.production src/index.js"
   },
   "type": "module",
+  "engines": {
+    "node": ">=20.6"
+  },
   "dependencies": {
     "@better-auth/expo": "^1.7.18",
     "better-auth": "^1.7.18",

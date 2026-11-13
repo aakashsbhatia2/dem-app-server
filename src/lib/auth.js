@@ -18,5 +18,5 @@ export const auth = betterAuth({
     },
   },
   plugins: [expo(), username({ displayUsername: false })],
-  trustedOrigins: ["demoapp://", ...(isDevelopment ? ["exp://", "exp://**"] : [])],
+  trustedOrigins: ["paceclub://", ...(isDevelopment ? ["exp://", "exp://**"] : [])],
 });
